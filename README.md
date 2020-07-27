@@ -41,9 +41,11 @@ provider "aws" {
 
 
 <br>
+
 Run the following in the CLI
+
 ```
-terraform init 
+terraform init
 ```
 
 Now lets add the resources in the file 
@@ -118,9 +120,11 @@ resource "aws_route_table_association" "route_table_association "{
 
 ```
 <br>
+
 Create the IAM role for your cluster
 
 ```
+
 resource "aws_iam_role" "my_cluster" {
   name = "terraform-eks-my_cluster"
 
@@ -143,19 +147,20 @@ POLICY
 <br>
 Attach these role policies to the IAM role
 <br>
+
 ```
 resource "aws_iam_role_policy_attachment" "my_cluster-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.my_cluster.name
 }
-
+```
+```
 resource "aws_iam_role_policy_attachment" "my_cluster-AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
   role       = aws_iam_role.my_cluster.name
 }
-
 ```
-<br>
+
 Create the security Group for the cluster and give the allowed ip ranges 
 <br>
 ```
@@ -173,13 +178,13 @@ resource "aws_security_group" "my_cluster" {
   tags = {
     Name = "terraform-eks-demo"
   }
-}
-```
+}```
 
 <br>
 Allow the network protocols for the security group
 <br>
 ```
+
 resource "aws_security_group_rule" "my_cluster-ingress-workstation-https" {
   cidr_blocks       = [local.workstation-external-cidr]
   description       = "Allow workstation to communicate with the cluster API Server"
@@ -193,8 +198,9 @@ resource "aws_security_group_rule" "my_cluster-ingress-workstation-https" {
 
 
 Create the EKS Cluster with the created VPC and subnets.
-
+<br>
 ```
+
 resource "aws_eks_cluster" "demo" {
   name     = var.cluster-name
   role_arn = aws_iam_role.my_cluster.arn
@@ -208,9 +214,11 @@ resource "aws_eks_cluster" "demo" {
     aws_iam_role_policy_attachment.my_cluster-AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.my_cluster-AmazonEKSServicePolicy,
   ]
-}
-```
+}```
+
+<br>
 Create the demo node
+<br>
 
 ```
 resource "aws_iam_role" "demo-node" {
@@ -231,13 +239,14 @@ resource "aws_iam_role" "demo-node" {
 }
 POLICY
 }
-
-
 ```
+<br>
 
 Attach these policies to the Nodes
+<br>
 
 ```
+
 resource "aws_iam_role_policy_attachment" "demo-node-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.demo-node.name
@@ -254,8 +263,10 @@ resource "aws_iam_role_policy_attachment" "demo-node-AmazonEC2ContainerRegistryR
 }
 
 ```
+<br>
 
 Create the Node Group
+<br>
 
 ```
 resource "aws_eks_node_group" "demo" {
@@ -278,13 +289,10 @@ resource "aws_eks_node_group" "demo" {
 }
 
 ```
+<br>
 
 
 And all done .All now you need to do is create this code and now apply this terraform code.
-
-
-
-
 
 
 <br>
