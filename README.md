@@ -1,7 +1,6 @@
 # Terraform
 
-This repository is for my task given in HybridMulticloud summer training from Linux world under the mentorship of 
-<h6>Vimal Daga </h6>
+This repository is for my task given in HybridMulticloud summer training from Linux world under the mentorship of<h6>Vimal Daga </h6>
 <br>
 In this task We will create a EKS cluster using 
 Terraform.This will enable us to create and destroy the cluster just in one click. 
@@ -77,4 +76,6 @@ For quickly launching the cluster clone this repostory and run the following .
 <br>
 
 
-```terraform apply eks.tf ```
+```
+terraform apply eks.tf
+```
