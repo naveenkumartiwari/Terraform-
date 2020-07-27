@@ -1,7 +1,7 @@
 # Terraform
 
 This repository is for my task given in HybridMulticloud summer training from Linux world under the mentorship of 
-<h3>Vimal Daga </h3>
+<h6>Vimal Daga </h6>
 <br>
 In this task We will create a EKS cluster using 
 Terraform.This will enable us to create and destroy the cluster just in one click. 
@@ -11,6 +11,9 @@ Amazon EKS (Elastic Container Service for Kubernetes) is a managed Kubernetes se
 The Kubernetes control plane plays a crucial role in a Kubernetes deployment as it is responsible for how Kubernetes communicates with your cluster — starting and stopping new containers, scheduling containers, performing health checks, and many more management tasks.<br>
 
 The big benefit of EKS, and other similar hosted Kubernetes services, is taking away the operational burden involved in running this control plane. You deploy cluster worker nodes using defined AMIs and with the help of CloudFormation, and EKS will provision, scale and manage the Kubernetes control plane for you to ensure high availability, security and scalability.<br>
+<br>
+We will use Terraform to create the EKS Cluster in the aws.Terraform enables us to create a complete infrastructure as a code.
+This enables us to create or destroy the whole infrastructure just in one click.
 <br>
 
 <h2>Requirements</h2>
@@ -25,6 +28,25 @@ Make sure you have the following  configured
     <li>eksctl</li>
 </ul>
 
+<br>
+Create a folder for your workspace for storing the all of the terraform code.<br>
+Create a file for the provider with the following code and save it.
+
+```
+provider "aws" {
+    region = "ap-south-1"
+    profile = "default"
+}
+```
+
+
+Run the following in the CLI
+```
+terraform init 
+```
+
+
+
 
 
 
@@ -51,7 +73,8 @@ Make sure you have the following  configured
 
 
 <br>
-For launching the cluster clone this repostory and run the following .
+For quickly launching the cluster clone this repostory and run the following .
+<br>
 
 
 ```terraform apply eks.tf ```
