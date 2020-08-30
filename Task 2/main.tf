@@ -75,6 +75,7 @@ resource "aws_security_group" "my_security_group" {
 }
 
 
+
 resource "aws_efs_file_system" "efs" {
    creation_token = "efs"
    performance_mode = "generalPurpose"
