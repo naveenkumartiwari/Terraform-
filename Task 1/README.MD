@@ -1,5 +1,6 @@
-This repository is for my task given in HybridMulticloud summer training from Linux world under the mentorship of
-Vimal Daga Linux World 
+This repository is for my tasks given in my  HybridMulticloud summer training from Linux world under the mentorship of Mr
+Vimal Daga.
+<br>
 In the first task we will launch Ec2 instance , create a EBS volume and launch this using cloudfront.
 <br>We will be using Terraform.
 Terraform enables us to create a complete infrastructure as a code.
@@ -158,7 +159,8 @@ Now create a s3 object which will be stored in the bucket.Give the bucket name y
    ]
 }
 ```
-Now the most Important part , creating the Cloudfront.Cloudfront is CDN i.e. a content delievry system for globally distributed network 
+Now the most Important part , creating the Cloudfront.Cloudfront is CDN i.e. a content delievry system for globally distributed network. 
+It retrieves data from Amazon S3 bucket and distributes it to multiple datacenter locations. It delivers the data through a network of data centers called edge locations. The nearest edge location is routed when the user requests for data, resulting in lowest latency, low network traffic, fast access to data, etc.
 
 ```
 resource "aws_cloudfront_distribution" "Cloudfront" {
