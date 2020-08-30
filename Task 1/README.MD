@@ -1,5 +1,5 @@
 This repository is for my task given in HybridMulticloud summer training from Linux world under the mentorship of
-<b>Vimal Daga Linux World <b> 
+Vimal Daga Linux World 
 In the first task we will launch Ec2 instance , create a EBS volume and launch this using cloudfront.
 <br>We will be using Terraform.
 Terraform enables us to create a complete infrastructure as a code.
