@@ -178,11 +178,13 @@ resource "aws_security_group" "my_cluster" {
   tags = {
     Name = "terraform-eks-demo"
   }
-}```
+}
+```
 
 <br>
 Allow the network protocols for the security group
 <br>
+
 ```
 
 resource "aws_security_group_rule" "my_cluster-ingress-workstation-https" {
@@ -214,13 +216,15 @@ resource "aws_eks_cluster" "demo" {
     aws_iam_role_policy_attachment.my_cluster-AmazonEKSClusterPolicy,
     aws_iam_role_policy_attachment.my_cluster-AmazonEKSServicePolicy,
   ]
-}```
+}
+```
 
 <br>
 Create the demo node
 <br>
 
 ```
+
 resource "aws_iam_role" "demo-node" {
   name = "terraform-eks-demo-node"
 
