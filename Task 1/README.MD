@@ -73,7 +73,9 @@ resource "aws_instance" "web" {
 }  
 ``` 
 
-Now create a EBS volume that is a type of storage which will be attached to our instance we just created .
+
+Amazon Elastic Block Store (EBS) is a block storage system used to store persistent data. Amazon EBS is suitable for EC2 instances by providing highly available block level storage volumes. It has three types of volume, i.e. General Purpose (SSD), Provisioned IOPS (SSD), and Magnetic. These three volume types differ in performance, characteristics, and cost.
+Now create a EBS volume which will be attached to our instance we just created .
 
 ```
 resource "aws_ebs_volume" "ebs_storage" {
