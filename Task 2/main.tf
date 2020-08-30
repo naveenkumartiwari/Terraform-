@@ -27,7 +27,7 @@ resource "aws_instance" "web" {
               "sudo systemctl enable httpd",
                "sudo su - root"
                 
-                "yum install -y amazon-efs-utils"
+                "sudo install -y amazon-efs-utils"
                 "mount -t efs ${efs_id}:/ /var/www/html "
 
                 "sudo git clone https://github.com/vimallinuxworld13/multicloud.git /var/www/html/"
