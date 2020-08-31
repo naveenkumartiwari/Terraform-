@@ -1,6 +1,10 @@
 This repository is for my tasks given in my  HybridMulticloud summer training from Linux world under the mentorship of Mr
 Vimal Daga.
 <br>
+<br>We will be using Terraform.
+Terraform enables us to create a complete infrastructure as a code.
+This enables us to create or destroy the whole infrastructure just in one click.
+<br>
 In the second  task everything will do everyhting we did in the task 1 but with a slight difference,Instead of the EBS volume that is a Block storage we will use a EFS storage.<br>
 
 AWS Elastic File System (EFS) is one of three main storage services offered by Amazon. It is a scalable, cloud-based file system for Linux-based applications and workloads that can be used in combination with AWS cloud services.EFS provides a shared stoarage for all the instances at once. 
@@ -290,3 +294,4 @@ Now just Run the following .
 
 ```
 terraform apply eks.tf
+```

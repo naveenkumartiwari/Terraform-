@@ -18,6 +18,7 @@ resource "aws_instance" "wordpress" {
 }
 
 
+
 resource "aws_instance" "database" {
     ami = "ami-00cb1de6eb870cec2"
     availability_zone = "sa-east-1a"
