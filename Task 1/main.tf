@@ -11,7 +11,7 @@ resource "aws_instance" "web" {
   availability_zone = "ap-south-1b"
   instance_type = "t2.micro"
   key_name = "key"
-  security_groups = [ "launch-wizard-1" ]
+  security_groups =  "${aws_security_group.my_security_group}"
 
   connection {
     type     = "ssh"
@@ -29,7 +29,43 @@ resource "aws_instance" "web" {
         ]
     }
 
-}     
+}   
+
+resource "aws_vpc" "vpc" {
+    cidr_block = "10.0.0.0/16"
+    enable_dns_support = "true" 
+    enable_dns_hostnames = "true" 
+    enable_classiclink = "false"
+    instance_tenancy = "default"    
+    
+    
+}
+
+resource "aws_subnet" "subnet-1" {
+    vpc_id = "${aws_vpc.vpc.id}"
+    cidr_block = "10.0.1.0/24"
+    map_public_ip_on_launch = "true" 
+    availability_zone = "ap-south-1a"
+    tags {
+        Name = "subnet-1"
+    }
+}
+
+resource "aws_security_group" "my_security_group" {
+  name        = "my_security_group"
+  vpc_id      = aws_vpc.vpc.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terraform-eks-demo"
+  }
+}
 
 
 resource "aws_ebs_volume" "ebs_storage" {

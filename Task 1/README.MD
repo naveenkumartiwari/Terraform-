@@ -74,6 +74,57 @@ resource "aws_instance" "web" {
 ``` 
 
 
+Now we have to create a VPc in which we will launch our instance. VPC is Virtual Private Cloud which gives us separate environments for our projects. 
+
+```
+resource "aws_vpc" "vpc" {
+    cidr_block = "10.0.0.0/16"
+    enable_dns_support = "true" 
+    enable_dns_hostnames = "true" 
+    enable_classiclink = "false"
+    instance_tenancy = "default"    
+    
+    
+}
+```
+
+
+Now we have to create subnets inside the vpc we just created. subnets give us ability to isolate the diffrent resources within the same projects 
+```
+resource "aws_subnet" "subnet-1" {
+    vpc_id = "${aws_vpc.vpc.id}"
+    cidr_block = "10.0.1.0/24"
+    map_public_ip_on_launch = "true" 
+    availability_zone = "ap-south-1a"
+    tags {
+        Name = "subnet-1"
+    }
+}
+```
+Each instance requires a security group which allows the traffic the kind you want.Here we will create a security group that will allow any kind of incoming or outgoing traffic. 
+
+```
+resource "aws_security_group" "my_security_group" {
+  name        = "my_security_group"
+  vpc_id      = aws_vpc.vpc.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terraform-eks-demo"
+  }
+}
+```
+
+
+
+
+
 Amazon Elastic Block Store (EBS) is a block storage system used to store persistent data. Amazon EBS is suitable for EC2 instances by providing highly available block level storage volumes. It has three types of volume, i.e. General Purpose (SSD), Provisioned IOPS (SSD), and Magnetic. These three volume types differ in performance, characteristics, and cost.
 Now create a EBS volume which will be attached to our instance we just created .
 

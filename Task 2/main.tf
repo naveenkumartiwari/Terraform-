@@ -11,7 +11,7 @@ resource "aws_instance" "web" {
   availability_zone = "ap-south-1b"
   instance_type = "t2.micro"
   key_name = "key"
-  security_groups = [ "launch-wizard-1" ]
+  security_groups =  "${aws_security_group.my_security_group}" 
 
   connection {
     type     = "ssh"
@@ -25,10 +25,6 @@ resource "aws_instance" "web" {
               "sudo yum install httpd git -y" ,
               "sudo systemctl restart httpd",
               "sudo systemctl enable httpd",
-               "sudo su - root"
-                
-                "sudo install -y amazon-efs-utils"
-                "mount -t efs ${efs_id}:/ /var/www/html "
 
                 "sudo git clone https://github.com/vimallinuxworld13/multicloud.git /var/www/html/"
  
@@ -94,6 +90,34 @@ resource "aws_efs_file_system" "efs" {
 
 output "myos_ip" {
   value = aws_instance.web.public_ip
+}
+
+
+
+resource "null_resource" "dir_mount"  {
+
+depends_on = [
+    aws_volume_attachment.ebs_attach,
+  ]
+
+
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    private_key = file("C:/Users/Naveen/Downloads/key.pem")
+    host     = aws_instance.web.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo su - root"
+                
+       "sudo install -y amazon-efs-utils"
+        "mount -t efs ${efs_id}:/ /var/www/html "
+
+        "sudo git clone https://github.com/vimallinuxworld13/multicloud.git /var/www/html/"
+    ]
+  }
 }
 
 resource "aws_s3_bucket" "bucket" {

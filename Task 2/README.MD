@@ -1,7 +1,13 @@
 This repository is for my tasks given in my  HybridMulticloud summer training from Linux world under the mentorship of Mr
 Vimal Daga.
 <br>
-In the first task we will launch Ec2 instance , create a EBS volume and launch this using cloudfront.
+In the second  task everything will do everyhting we did in the task 1 but with a slight difference,Instead of the EBS volume that is a Block storage we will use a EFS storage.<br>
+
+AWS Elastic File System (EFS) is one of three main storage services offered by Amazon. It is a scalable, cloud-based file system for Linux-based applications and workloads that can be used in combination with AWS cloud services.EFS provides a shared stoarage for all the instances at once. 
+
+
+
+We will launch Ec2 instance , create a EFS volume and launch this using cloudfront.
 <br>We will be using Terraform.
 Terraform enables us to create a complete infrastructure as a code.
 This enables us to create or destroy the whole infrastructure just in one click.
@@ -71,10 +77,89 @@ resource "aws_instance" "web" {
     }
 
 }  
-``` 
+```
+
+Now we have to create a VPc in which we will launch our instance. VPC is Virtual Private Cloud which gives us separate environments for our projects. 
+
+```
+resource "aws_vpc" "vpc" {
+    cidr_block = "10.0.0.0/16"
+    enable_dns_support = "true" 
+    enable_dns_hostnames = "true" 
+    enable_classiclink = "false"
+    instance_tenancy = "default"    
+    
+    
+}
+```
+
+
+Now we have to create subnets inside the vpc we just created. subnets give us ability to isolate the diffrent resources within the same projects 
+```
+resource "aws_subnet" "subnet-1" {
+    vpc_id = "${aws_vpc.vpc.id}"
+    cidr_block = "10.0.1.0/24"
+    map_public_ip_on_launch = "true" 
+    availability_zone = "ap-south-1a"
+    tags {
+        Name = "subnet-1"
+    }
+}
+```
+Each instance requires a security group which allows the traffic the kind you want.Here we will create a security group that will allow any kind of incoming or outgoing traffic. 
+
+```
+resource "aws_security_group" "my_security_group" {
+  name        = "my_security_group"
+  vpc_id      = aws_vpc.vpc.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "terraform-eks-demo"
+  }
+}
+```
+
+Our instance is ready but we have to still add the EFS storage to this , so create a EFS storage . 
+
+```
+resource "aws_efs_file_system" "efs" {
+   creation_token = "efs"
+   performance_mode = "generalPurpose"
+   throughput_mode = "bursting"
+   encrypted = "true"
+ tags = {
+     Name = "efs"
+   }
+ }
+```
+Now you have to give a target to which you want this EFS tsorage to attached with. So we will attach this to instance we created above.Give the subnet id and the security group. 
 
 
 
+```
+ resource "aws_efs_mount_target" "efs-mount" {
+   file_system_id  = "${aws_efs_file_system.efs.id}"
+   subnet_id = "${aws_subnet.subnet-1.id}"
+   security_groups = ["${aws_security_group.my_security_group.id}"]
+ }
+
+```
+
+
+
+
+
+Just Like EBS we have to also mount this EFS to the directory we want and select the path  to which we want this EFS to be mounted upon. Here we are again mounting this on the httpd path so our saved webpages can also be saved in the EFS. 
+
+
+```
 resource "null_resource" "dir_mount"  {
 
 depends_on = [
@@ -100,11 +185,10 @@ depends_on = [
     ]
   }
 }
+```
 
 
-output "myos_ip" {
-  value = aws_instance.web.public_ip
-}
+
 
 Now  Lets create a S3 Bucket for temporary storage.And doesnt need to be mounted to any single instance.
 We will be using this S3 bucket for storing our data and use it further in the cloudfront. For now will make it public accesseble so that anyone can view its object and also enable the versioning.Make sure You give the bucket a globally unique name.
