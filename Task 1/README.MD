@@ -278,4 +278,5 @@ Now just Run the following .
 
 
 ```
-terraform apply eks.tf
+terraform apply 
+```
