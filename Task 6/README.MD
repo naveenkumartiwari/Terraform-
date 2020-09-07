@@ -31,10 +31,10 @@ Make sure you have the following  configured
     <li>Minikube configured</li>
     <li>Kubenetes setup on CLI</li>
 </ul>
-<b>What is Kubernetes <b><br>
+<h2>What is Kubernetes </h2><br>
 Kubernetes is a portable, extensible, open-source platform for managing containerized workloads and services, that facilitates both declarative configuration and automation. It has a large, rapidly growing ecosystem. Kubernetes services, support, and tools are widely available.<br>
 
-<b>What is Minikube</b> <br>
+<h2>What is Minikube</h2> <br>
 Minikube is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a Virtual Machine (VM) on your laptop for users looking to try out Kubernetes or develop with it day-to-day.<br>
 Here we will be launching the wordpress Application On top of the Minikube.You can launch it on any other Kubernetes cluster on cloud 
 like EKS or , GKE . 
